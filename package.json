@@ -16,5 +16,8 @@
 	"files": [
 		"cli.js",
 		"index.js"
-	]
+	],
+	"dependencies": {
+		"puppeteer": "^5.2.1"
+	}
 }
