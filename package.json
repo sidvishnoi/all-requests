@@ -1,0 +1,20 @@
+{
+	"name": "all-requests",
+	"version": "0.0.1",
+	"description": "Find all local and remote sub-resources and HTTP requests in a HTML document.",
+	"keywords": [
+		"subresource",
+		"requests",
+		"puppeteer",
+		"sub-resource",
+		"dependencies"
+	],
+	"license": "MIT",
+	"author": "Sid Vishnoi <sidvishnoi8@gmail.com> (https://sidvishnoi.github.io/)",
+	"main": "index.js",
+	"bin": "cli.js",
+	"files": [
+		"cli.js",
+		"index.js"
+	]
+}
