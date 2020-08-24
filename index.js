@@ -34,11 +34,12 @@ async function* getSubResources(url, options = {}) {
 
 	page
 		.goto(url.href, options)
-		.then(response => {
+		.then(async response => {
 			if (!response || !response.ok()) {
 				const reason = response ? `. HTTP ${response.status()}` : "";
 				throw new Error(`Failed to navigate to ${url}${reason}`);
 			}
+			await scrollPageToBottom();
 		})
 		.finally(async () => {
 			done = true;
@@ -49,6 +50,30 @@ async function* getSubResources(url, options = {}) {
 		await promise;
 		yield* subResources;
 		subResources = [];
+	}
+
+	// Make sure we can also collect "lazy" requests like `<img loading="lazy">`.
+	// Based on https://github.com/mbalabash/puppeteer-autoscroll-down
+	function scrollPageToBottom() {
+		return page.evaluate(async () => {
+			const scrollStep = window.innerHeight * 0.8;
+			const scrollDelay = 20;
+			const getAvailableScrollHeight = () => {
+				const { scrollHeight, offsetHeight, clientHeight } = document.body;
+				return Math.max(scrollHeight, offsetHeight, clientHeight);
+			};
+			await new Promise(resolve => {
+				let scrolled = 0;
+				const intervalId = setInterval(() => {
+					window.scrollBy(0, scrollStep);
+					scrolled += scrollStep;
+					if (scrolled >= getAvailableScrollHeight()) {
+						clearInterval(intervalId);
+						resolve();
+					}
+				}, scrollDelay);
+			});
+		});
 	}
 }
 
