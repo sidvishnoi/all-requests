@@ -18,6 +18,7 @@
 		"index.js"
 	],
 	"dependencies": {
-		"puppeteer": "^5.2.1"
+		"puppeteer": "^5.2.1",
+		"sade": "^1.7.3"
 	}
 }
